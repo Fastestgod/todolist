@@ -11,7 +11,7 @@ app.use(express.json());
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect('mongodb+srv://applac69:<vyOClhqtXBQgy4WC>@todolist.wcao9.mongodb.net/')
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
