@@ -32,7 +32,8 @@
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
-    "start": "concurrently \"cd todolist-frontend && npm start\" \"cd todolist-backend && npm start\""
+    "start": "concurrently \"cd todolist-frontend && npm start\" \"cd todolist-backend && npm start\"",
+    "build": "concurrently \"cd todolist-frontend && npm start\" \"cd todolist-backend && npm start\""
   },
   "keywords": [],
   "author": "",
