@@ -34,8 +34,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "concurrently \"cd todolist-frontend && npm start\" \"cd todolist-backend && npm start\""
-  },
+    "start": "npm run build",
+    "build": "npm run build"   
+    },
   "engines": {
     "node": "22.x"
   },
