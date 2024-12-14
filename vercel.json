@@ -6,7 +6,7 @@
         "use": "@vercel/static-build"
       },
       {
-        "src": "todolist-backend/index.js",
+        "src": "todolist-backend/server.js",
         "use": "@vercel/node"
       }
     ],
