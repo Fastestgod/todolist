@@ -1,7 +1,7 @@
-// /todolist-frontend/src/App.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import { fetchTasks, addTask, updateTask, deleteTask } from './api'; // Assuming the api.js file is in the same folder
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -10,24 +10,22 @@ const App = () => {
   const [editTaskTitle, setEditTaskTitle] = useState('');
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const loadTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
+        const response = await fetchTasks();
         setTasks(response.data);
       } catch (error) {
-        console.error('There was an error fetching tasks!', error);
+        console.error('Error fetching tasks:', error);
       }
     };
-    fetchTasks();
+    loadTasks();
   }, []);
 
   const handleAddTask = async () => {
     if (!newTask) return;
     try {
-      const response = await axios.post('http://localhost:5000/api/tasks', {
-        title: newTask,
-        completed: false
-      });
+      const task = { title: newTask, completed: false };
+      const response = await addTask(task);
       setTasks([...tasks, response.data]);
       setNewTask('');
     } catch (error) {
@@ -44,7 +42,7 @@ const App = () => {
     if (!editTaskTitle) return;
     try {
       const updatedTask = { title: editTaskTitle, completed: false };
-      const response = await axios.put(`http://localhost:5000/api/tasks/${editTaskId}`, updatedTask);
+      const response = await updateTask(editTaskId, updatedTask);
       setTasks(tasks.map((task) => (task._id === editTaskId ? response.data : task)));
       setEditTaskId(null);
       setEditTaskTitle('');
@@ -55,10 +53,20 @@ const App = () => {
 
   const handleDeleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`);
+      await deleteTask(taskId);
       setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
       console.error('Error deleting task:', error);
+    }
+  };
+
+  const handleCompleteTask = async (taskId, completed) => {
+    try {
+      const updatedTask = { completed: !completed }; // Toggle completed status
+      const response = await updateTask(taskId, updatedTask);
+      setTasks(tasks.map((task) => (task._id === taskId ? response.data : task)));
+    } catch (error) {
+      console.error('Error completing task:', error);
     }
   };
 
@@ -91,6 +99,9 @@ const App = () => {
             {task.title} {task.completed ? '(Completed)' : '(Pending)'}
             <button onClick={() => handleEditTask(task._id, task.title)}>Edit</button>
             <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
+            <button onClick={() => handleCompleteTask(task._id, task.completed)}>
+              {task.completed ? 'Mark as Pending' : 'Mark as Complete'}
+            </button>
           </li>
         ))}
       </ul>
