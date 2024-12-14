@@ -37,7 +37,7 @@
     "start": "concurrently \"cd todolist-frontend && npm start\" \"cd todolist-backend && npm start\""
   },
   "engines": {
-    "node": "16.x"
+    "node": "22.x"
   },
   "keywords": [],
   "author": "",
