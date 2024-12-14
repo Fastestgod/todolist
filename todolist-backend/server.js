@@ -1,3 +1,4 @@
+// /todolist-backend/server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -11,19 +12,13 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(bodyParser.json()); // Parse incoming JSON requests
 
 // MongoDB connection
-const mongoURI = process.env.MONGO_URL; // Fetch MongoDB URI from .env file
-if (!mongoURI) {
-  console.error('MONGO_URL is not defined in .env file');
-  process.exit(1); // Exit the application if the MongoDB URI is missing
-}
-
-mongoose.connect(process.env.MONGO_URL)
+const mongoURI = process.env.MONGO_URL;
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => {
     console.error('Failed to connect to MongoDB:', err.message);
     process.exit(1);
   });
-
 
 // Routes
 app.use('/api/tasks', require('./routes/tasks')); // Tasks API route
