@@ -3,21 +3,21 @@
     "builds": [
       {
         "src": "todolist-frontend/package.json",
-        "use": "@vercel/react"
+        "use": "@vercel/static-build"
       },
       {
-        "src": "todolist-backend/package.json",
+        "src": "todolist-backend/server.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "/todolist-backend/api/$1"
+        "dest": "todolist-backend/server.js"
       },
       {
         "src": "/(.*)",
-        "dest": "/todolist-frontend/$1"
+        "dest": "todolist-frontend/build/$1"
       }
     ]
   }
