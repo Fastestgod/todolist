@@ -1,36 +1,35 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { addTask, updateTask } from '../api';
 
-const TaskForm = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const TaskForm = ({ task = {}, onUpdate }) => {
+  const [taskName, setTaskName] = useState(task.name || '');
+  const [completed, setCompleted] = useState(task.completed || false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/tasks', { title, description })
-      .then(() => {
-        setTitle('');
-        setDescription('');
-        window.location.reload(); // Refresh to update the task list
-      })
-      .catch((error) => console.error(error));
+    const taskData = { name: taskName, completed };
+
+    if (task._id) {
+      await updateTask(task._id, taskData);
+    } else {
+      await addTask(taskData);
+    }
+    onUpdate();
+    setTaskName('');
+    setCompleted(false);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add Task</h2>
+      <h2>{task._id ? 'Edit Task' : 'Add Task'}</h2>
       <input
         type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+        placeholder="Task name"
+        required
       />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      ></textarea>
-      <button type="submit">Add Task</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };

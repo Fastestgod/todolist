@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { fetchTasks, deleteTask } from '../api';
 
-const TaskList = () => {
+const TaskList = ({ onUpdate }) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/tasks')
-      .then((response) => setTasks(response.data))
-      .catch((error) => console.error(error));
-  }, []);
+    const loadTasks = async () => {
+      const fetchedTasks = await fetchTasks();
+      setTasks(fetchedTasks);
+    };
 
-  const deleteTask = (id) => {
-    axios.delete(`http://localhost:5000/api/tasks/${id}`)
-      .then(() => setTasks(tasks.filter(task => task._id !== id)))
-      .catch((error) => console.error(error));
+    loadTasks();
+  }, [onUpdate]);
+
+  const handleDelete = async (id) => {
+    await deleteTask(id);
+    onUpdate();
   };
 
   return (
@@ -22,8 +24,8 @@ const TaskList = () => {
       <ul>
         {tasks.map((task) => (
           <li key={task._id}>
-            {task.title} - {task.description}
-            <button onClick={() => deleteTask(task._id)}>Delete</button>
+            <span>{task.name}</span>
+            <button onClick={() => handleDelete(task._id)}>Delete</button>
           </li>
         ))}
       </ul>
