@@ -1,17 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const fetchTasks = () => {
-  return axios.get('http://localhost:5000/api/tasks');
-};
+const API_BASE_URL = "http://localhost:5000/api/tasks"; // Adjust port if needed
 
-export const addTask = (task) => {
-  return axios.post('http://localhost:5000/api/tasks', task);
-};
-
-export const updateTask = (taskId, updatedTask) => {
-  return axios.put(`http://localhost:5000/api/tasks/${taskId}`, updatedTask);
-};
-
-export const deleteTask = (taskId) => {
-  return axios.delete(`http://localhost:5000/api/tasks/${taskId}`);
-};
+export const getTasks = async () => axios.get(API_BASE_URL);
+export const createTask = async (task) => axios.post(API_BASE_URL, task);
+export const updateTask = async (id, updatedTask) =>
+  axios.put(`${API_BASE_URL}/${id}`, updatedTask);
+export const deleteTask = async (id) => axios.delete(`${API_BASE_URL}/${id}`);

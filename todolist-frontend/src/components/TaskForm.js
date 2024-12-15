@@ -1,35 +1,40 @@
-import React, { useState } from 'react';
-import { addTask, updateTask } from '../api';
+import React, { useState, useEffect } from "react";
+import { createTask, updateTask } from "../api";
 
-const TaskForm = ({ task = {}, onUpdate }) => {
-  const [taskName, setTaskName] = useState(task.name || '');
-  const [completed, setCompleted] = useState(task.completed || false);
+const TaskForm = ({ taskToEdit, onSuccess }) => {
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    if (taskToEdit) {
+      setTitle(taskToEdit.title);
+    }
+  }, [taskToEdit]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const taskData = { name: taskName, completed };
-
-    if (task._id) {
-      await updateTask(task._id, taskData);
-    } else {
-      await addTask(taskData);
+    try {
+      if (taskToEdit) {
+        await updateTask(taskToEdit._id, { title });
+      } else {
+        await createTask({ title });
+      }
+      setTitle("");
+      onSuccess();
+    } catch (error) {
+      console.error("Error submitting task:", error);
     }
-    onUpdate();
-    setTaskName('');
-    setCompleted(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{task._id ? 'Edit Task' : 'Add Task'}</h2>
+    <form onSubmit={handleSubmit} className="task-form">
       <input
         type="text"
-        value={taskName}
-        onChange={(e) => setTaskName(e.target.value)}
-        placeholder="Task name"
+        placeholder="Task Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         required
       />
-      <button type="submit">Submit</button>
+      <button type="submit">{taskToEdit ? "Update Task" : "Add Task"}</button>
     </form>
   );
 };
