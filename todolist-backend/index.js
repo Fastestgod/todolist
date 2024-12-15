@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
     res.json("Hello");
 })
 // MongoDB connection
-const mongoURI = process.env.MONGO_URI;
+const mongoURI = 'mongodb+srv://applac69:1234567Yes@todolist.wcao9.mongodb.net/?retryWrites=true&w=majority&appName=todolist';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => {
