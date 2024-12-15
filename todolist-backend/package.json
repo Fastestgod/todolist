@@ -1,8 +1,8 @@
 {
-  "name": "todolist-frontend",
+  "name": "todolist-backend",
   "version": "1.0.0",
-  "description": "Frontend for the To-Do List app",
-  "main": "index.js",
+  "description": "backend for the To-Do List app",
+  "main": "server.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
