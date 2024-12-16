@@ -1,35 +1,22 @@
-// /todolist-backend/index.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config(); // Load environment variables from .env file
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const routes = require('./routes/tasks')
 
-const app = express();
 
-// Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(bodyParser.json()); // Parse incoming JSON requests
-app.get("/", (req, res) => {
-    res.json("Hello");
-})
-// MongoDB connection
-const mongoURI = 'mongodb+srv://applac69:1234567Yes@todolist.wcao9.mongodb.net/?retryWrites=true&w=majority&appName=todolist';
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => {
-    console.error('Failed to connect to MongoDB:', err.message);
-    process.exit(1);
-  });
+require('dotenv').config()
 
-// Routes
-app.use('/api/tasks', require('./routes/tasks')); // Tasks API route
+const app = express()
+const PORT = process.env.port || 5000
 
-// Default Route
-app.get('/', (req, res) => {
-  res.send('Welcome to the To-Do List API');
-});
+app.use(express.json())
+app.use(cors())
 
-// Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+mongoose
+    .connect(process.env.MONGODB_URL)
+    .then(() => console.log(`Connected to MongoDB....`))
+    .catch((err) => console.log(err))
+
+app.use(routes)
+
+app.listen(PORT, () => console.log(`Listening on: ${PORT}`))
