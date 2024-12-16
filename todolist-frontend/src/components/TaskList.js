@@ -6,7 +6,7 @@ const TaskList = () => {
 
   // Fetch tasks from the backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/tasks')
+    axios.get('https://todolist-todolist-backend.vercel.app/')
       .then((response) => {
         setTasks(response.data);
       })
@@ -16,7 +16,7 @@ const TaskList = () => {
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/api/tasks/${id}`)
+    axios.delete(`hhttps://todolist-todolist-backend.vercel.app/${id}`)
       .then(() => {
         setTasks(tasks.filter(task => task._id !== id));
       })
