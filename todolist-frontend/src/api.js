@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api/tasks"; // Adjust port if needed
+const API_BASE_URL = "https://todolist-todolist-backend.vercel.app/"; // Adjust port if needed
 
 export const getTasks = async () => axios.get(API_BASE_URL);
 export const createTask = async (task) => axios.post(API_BASE_URL, task);
